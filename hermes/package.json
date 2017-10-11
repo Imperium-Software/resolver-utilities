@@ -1,0 +1,16 @@
+{
+  "name": "hermes",
+  "version": "1.0.0",
+  "description": "An HTTP endpoint to the Resolver SATSolver",
+  "main": "hermes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node hermes.js"
+  },
+  "author": "Imperium Software",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.3"
+  }
+}
