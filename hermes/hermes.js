@@ -7,10 +7,36 @@ const net = require('net');
 
 const app = express();
 var client = new net.Socket();
+var return_data = undefined;
 
 app.use(express.json()); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
+
+client.connect(PORT, HOST, function () {
+    console.log('Connected to SATServer at (' + HOST + ':' + PORT + ")");
+});
+
+client.on('data', function(data) {
+    return_data = data;
+});
+
+client.on('close', function() {
+    console.log('Connection to SATServer closed.');
+});
+
+function construct_request(cnf) {
+    var request = {
+        "SOLVE": {
+            "raw_input": cnf,
+            "tabu_list_length": 10,
+            "max_false": 5,
+            "rec": 5,
+            "k": 5
+        }
+    };
+    return JSON.stringify(request) + '#';
+}
 
 app.post('/', function (req, res) {
 
@@ -31,10 +57,13 @@ app.post('/', function (req, res) {
     // construct request
     // write to socket.
 
+    client.write(construct_request(cnf));
+    while (return_data === undefined) {
+        sleep(500);
     
-
+    }
     // Respond to browser.
-    res.send("Your solution is:\n[some bit string]");
+    res.send("Server response : " + return_data);
 });
 
 app.get('/', function (req, res) {
@@ -43,13 +72,4 @@ app.get('/', function (req, res) {
 
 app.listen(8080, function () {
     console.log('Endpoint is exposed on port 8080.');
-});
-
-client.connect(PORT, HOST, function () {
-    console.log('Connected to SATServer at (' + HOST + ':' + PORT + ")");
-
-});
-
-client.on('close', function() {
-    console.log('Connection to SATServer closed.');
 });
