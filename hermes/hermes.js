@@ -70,6 +70,6 @@ app.get('/', function (req, res) {
     res.send('Please use POST to talk to me.');
 });
 
-app.listen(8080, function () {
-    console.log('Endpoint is exposed on port 8080.');
+app.listen(80, function () {
+    console.log('Endpoint is exposed on port 80.');
 });
