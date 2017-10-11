@@ -1,5 +1,7 @@
 const HOST = 'localhost';
-const PORT = 55555;
+const PORT_INTERNAL = 55555;
+const PORT_EXTERNAL = process.env.PORT || 3000;
+
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,8 +15,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-client.connect(PORT, HOST, function () {
-    console.log('Connected to SATServer at (' + HOST + ':' + PORT + ")");
+client.connect(PORT_INTERNAL, HOST, function () {
+    console.log('Connected to SATServer at (' + HOST + ':' + PORT_INTERNAL + ")");
 });
 
 client.on('data', function(data) {
@@ -70,6 +72,6 @@ app.get('/', function (req, res) {
     res.send('Please use POST to talk to me.');
 });
 
-app.listen(80, function () {
-    console.log('Endpoint is exposed on port 80.');
+app.listen(PORT_EXTERNAL, function () {
+    console.log(`Endpoint is exposed on port ${PORT_EXTERNAL}.`);
 });
