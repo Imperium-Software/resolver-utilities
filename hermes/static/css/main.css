@@ -419,3 +419,9 @@ nav ul a {
     background-color: #F5F5F5;
     font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
 }
+
+.row .inner-code {
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #DEDEDE;
+}

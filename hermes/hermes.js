@@ -33,23 +33,32 @@ function construct_request(cnf) {
     return JSON.stringify(request) + '#';
 }
 
-app.post('/solve', function (req, res) {
+var queue = [];
 
-    client.connect(PORT_INTERNAL, HOST, function () {
-        console.log('Connected to SATServer at (' + HOST + ':' + PORT_INTERNAL + ")");
-        client.connected = true;
-    });
-    
-    client.on('data', function(data) {
-        return_data = data.slice(0, -1);
-        console.log(return_data.toString('utf8'));
-        // console.log()
-        // res.send(return_data.toString('utf8'));
-    });
-    
-    client.on('close', function() {
-        console.log('Connection to SATServer closed.');
-    });
+client.connect(PORT_INTERNAL, HOST, function () {
+    console.log('Connected to SATServer at (' + HOST + ':' + PORT_INTERNAL + ")");
+    client.connected = true;
+});
+
+client.on('data', function(data) {
+    return_data = data.toString('utf8');
+
+    response = JSON.parse(return_data.slice(0, -1));
+    var message_type;
+    for (let key in response["RESPONSE"]) {
+        message_type = key;
+    }
+
+    if (message_type == 'FINISHED') {
+        queue.push({'id': client.respond_to, 'result': return_data});
+    }
+});
+
+client.on('close', function() {
+    console.log('Connection to SATServer closed.');
+});
+
+app.post('/solve', function (req, res) {
 
     // Check for presence of cnf parameter.
     let cnf = req.body.cnf;
@@ -62,11 +71,25 @@ app.post('/solve', function (req, res) {
     console.log(cnf);
     console.log("Attempting to send job to SATServer...");
     client.write(construct_request(cnf));
-    res.send('awwww yis');
+    client.respond_to = res.connection.remoteAddress;
+    res.send('Thanks, going to solve it in a jiffy!')
 });
 
 app.get('/solve', function (req, res) {
     res.send('Please use POST to talk to me.');
+});
+
+app.get('/solve_result', function (req, res) {
+        console.log('Client is requesting result.')
+        for (var index = 0; index < queue.length; index++) {
+            if (queue[index]['id'] == res.connection.remoteAddress) {
+                result = queue[index]['result'];
+                queue.splice(index, 1);
+            }
+            res.send(result);
+            return;
+        }
+        res.send('Nothing to get.');
 });
 
 app.listen(PORT_EXTERNAL, function () {
