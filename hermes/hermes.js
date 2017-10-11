@@ -1,4 +1,4 @@
-const HOST = 'localhost';
+const HOST = '127.0.0.1';
 const PORT_INTERNAL = 55555;
 const PORT_EXTERNAL = process.env.PORT || 3000;
 
@@ -17,10 +17,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 client.connect(PORT_INTERNAL, HOST, function () {
     console.log('Connected to SATServer at (' + HOST + ':' + PORT_INTERNAL + ")");
+    client.connected = true;
 });
 
 client.on('data', function(data) {
-    return_data = data;
+    return_data = data.slice(0, -1);
+    console.log(return_data);
 });
 
 client.on('close', function() {
@@ -30,11 +32,14 @@ client.on('close', function() {
 function construct_request(cnf) {
     var request = {
         "SOLVE": {
-            "raw_input": cnf,
+            "raw_input": cnf["raw_input"],
             "tabu_list_length": 10,
             "max_false": 5,
             "rec": 5,
-            "k": 5
+            "k": 5,
+            "max_flip": 5,
+            "population_size": 50, 
+            "sub_population_size": 5,
         }
     };
     return JSON.stringify(request) + '#';
@@ -60,10 +65,16 @@ app.post('/', function (req, res) {
     // write to socket.
 
     client.write(construct_request(cnf));
-    while (return_data === undefined) {
-        sleep(500);
+
+    //var stuff = client.read();
+    // while (stuff === null) {
+    //     stuff = client.read(256);
+    // }
+    // console.log(stuff);
+    //while (return_data === undefined) {
+        //sleep(500);
     
-    }
+    //}
     // Respond to browser.
     res.send("Server response : " + return_data);
 });
