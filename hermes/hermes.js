@@ -2,7 +2,6 @@ const HOST = '127.0.0.1';
 const PORT_INTERNAL = 55555;
 const PORT_EXTERNAL = process.env.PORT || 3000;
 
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const net = require('net');
@@ -14,20 +13,9 @@ var return_data = undefined;
 app.use(express.json()); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(express.static('static'))
 
-client.connect(PORT_INTERNAL, HOST, function () {
-    console.log('Connected to SATServer at (' + HOST + ':' + PORT_INTERNAL + ")");
-    client.connected = true;
-});
-
-client.on('data', function(data) {
-    return_data = data.slice(0, -1);
-    console.log(return_data);
-});
-
-client.on('close', function() {
-    console.log('Connection to SATServer closed.');
-});
+// Solving Stuff
 
 function construct_request(cnf) {
     var request = {
@@ -45,10 +33,25 @@ function construct_request(cnf) {
     return JSON.stringify(request) + '#';
 }
 
-app.post('/', function (req, res) {
+app.post('/solve', function (req, res) {
+
+    client.connect(PORT_INTERNAL, HOST, function () {
+        console.log('Connected to SATServer at (' + HOST + ':' + PORT_INTERNAL + ")");
+        client.connected = true;
+    });
+    
+    client.on('data', function(data) {
+        return_data = data.slice(0, -1);
+        console.log(return_data.toString('utf8'));
+        // console.log()
+        // res.send(return_data.toString('utf8'));
+    });
+    
+    client.on('close', function() {
+        console.log('Connection to SATServer closed.');
+    });
 
     // Check for presence of cnf parameter.
-    
     let cnf = req.body.cnf;
     if (cnf === undefined) {
         res.send('You are going to need to send me a CNF problem to pass to Zeus.');
@@ -58,28 +61,11 @@ app.post('/', function (req, res) {
     console.log("Received the following job:");
     console.log(cnf);
     console.log("Attempting to send job to SATServer...");
-
-    // Talk to SATServer.
-
-    // construct request
-    // write to socket.
-
     client.write(construct_request(cnf));
-
-    //var stuff = client.read();
-    // while (stuff === null) {
-    //     stuff = client.read(256);
-    // }
-    // console.log(stuff);
-    //while (return_data === undefined) {
-        //sleep(500);
-    
-    //}
-    // Respond to browser.
-    res.send("Server response : " + return_data);
+    res.send('awwww yis');
 });
 
-app.get('/', function (req, res) {
+app.get('/solve', function (req, res) {
     res.send('Please use POST to talk to me.');
 });
 
