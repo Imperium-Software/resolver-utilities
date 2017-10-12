@@ -425,3 +425,14 @@ nav ul a {
     padding: 20px;
     background-color: #DEDEDE;
 }
+
+#cnf-textarea {
+    min-height: 170px;
+    margin-top: 20px;
+}
+
+.card .card-content .aside {
+    font-size: 12px;
+    color: darkgray;
+    margin-top: 10px;
+}

@@ -49,7 +49,7 @@ client.on('data', function(data) {
         message_type = key;
     }
 
-    if (message_type == 'FINISHED') {
+    if (message_type == 'FINISHED' || message_type == 'ERROR') {
         queue.push({'id': client.respond_to, 'result': return_data});
     }
 });
@@ -62,17 +62,48 @@ app.post('/solve', function (req, res) {
 
     // Check for presence of cnf parameter.
     let cnf = req.body.cnf;
+    var send_message = 'Thanks, going to solve it in a jiffy!';
     if (cnf === undefined) {
         res.send('You are going to need to send me a CNF problem to pass to Zeus.');
         console.log('Received malformed request.');
         return;
     }
     console.log("Received the following job:");
-    console.log(cnf);
+    job = cnf["raw_input"];
+    var problem_line;
+    console.log(job[1]);
+    try {
+        var found_p;
+        for (var index = 0; index < job.length; index++) {
+            if (job[index][0] == 'p') {
+                problem_line = job[index].split(' ');
+                if (problem_line[2] > 20 || problem_line[3] > 20) {
+                    send_message = 'To many clauses or variables.';
+                    res.send(send_message);
+                }
+                found_p = true;
+            }
+
+            if (job[index][0] == 'c' || job[index] == 'c' || job[index] == '') {
+                job.splice(index, 1);
+                index--;
+            }
+        }
+        if (!found_p) {
+            send_message = 'Something is wrong with your CNF.';
+            res.send(send_message);
+        }
+    } catch(e) {
+        send_message = 'Something is wrong with your CNF.';
+        res.send(send_message);
+        return;
+    }
+    console.log(job);
+    console.log(problem_line);
     console.log("Attempting to send job to SATServer...");
     client.write(construct_request(cnf));
     client.respond_to = res.connection.remoteAddress;
-    res.send('Thanks, going to solve it in a jiffy!')
+    res.send(send_message);
 });
 
 app.get('/solve', function (req, res) {
