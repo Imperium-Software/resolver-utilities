@@ -346,6 +346,15 @@ nav ul a {
     margin-left: auto;
 }
 
+.releases-row {
+    margin-bottom: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.releases-row > div > a > div > img {
+    max-height: 122px;
+}
+
 #footer-links {
     margin: auto;
     height: 20px;
