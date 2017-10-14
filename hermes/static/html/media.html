@@ -26,28 +26,38 @@
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li><a href="../index.html">Home</a></li>
                         <li><a href="learn_sat.html">Learn SAT</a></li>
-                        <li><a href="media.html">Media</a></li>
-                        <li class="active"><a href="#">Submit Problem</a></li>
+                        <li class="active"><a href="#">Media</a></li>
+                        <li><a href="solve_sat.html">Submit Problem</a></li>
                     </ul>
                 </div>
             </nav>
         </div>
 
         <div class="container">
+
             <div class="row">
                 <div class="col s12">
                     <div class="card first-card">
                         <div class="card-content">
-                            <span class="card-title center-align">Submit a Solving Job</span>
-                            <br>
-                            <p>Submit a SAT problem in DIMACS CNF format. Don't know what DIMACS or CNF is? Check out <a href="http://people.sc.fsu.edu/~jburkardt/data/cnf/cnf.html" target="_blank">this article</a> for a quick explanation.</p> 
-                            <textarea id="cnf-textarea" name="cnf" id="" cols="30"></textarea>
-                            <div id="response" class="code" style="display: none">
-                                <p class="time"></p>
-                                <p class="answer"></p>
+                            <span class="card-title center-align">About IMPERIUM</span>
+                            <hr>
+                            <div class="video-container">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/CZ_KqXo0SNQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
                             </div>
-                            <button style="background-color: #F37259" class="btn" onclick="solve_custom()">Submit</button>
-                            <p class="aside">* Please note that jobs with more that 20 variables or clauses will be rejected. If you have a bigger problem to solve, download  <a>our SAT solver</a> to solve any size problems.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="card first-card">
+                        <div class="card-content">
+                            <span class="card-title center-align">SAT Solvers and GAs</span>
+                            <hr>
+                            <div class="video-container">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/GtvNsHAHROY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,8 +73,8 @@
                             <div id="footer-links-container">
                                 <ul id="footer-links">
                                     <li><div class="valign-wrapper" style="height: 100%; width: 100%"><a href="../index.html" style="width: 100%">Home</a></div></li>
-                                    <li><div class="valign-wrapper" style="height: 100%; width: 100%"><a href="#" style="width: 100%">Submit Problem</a></div></li>
-                                    <li><div class="valign-wrapper" style="height: 100%; width: 100%"><a href="media.html" style="width: 100%">Media</a></div></li>
+                                    <li><div class="valign-wrapper" style="height: 100%; width: 100%"><a href="solve_sat.html" style="width: 100%">Submit Problem</a></div></li>
+                                    <li><div class="valign-wrapper" style="height: 100%; width: 100%"><a href="#" style="width: 100%">Media</a></div></li>
                                     <li><div class="valign-wrapper" style="height: 100%; width: 100%"><a href="learn_sat.html" style="width: 100%">Learn SAT</a></div></li>
                                 </ul>
                             </div>
@@ -75,11 +85,14 @@
 
         </div>
 
-        <script src="../js/vendor/modernizr-3.5.0.min.js"></script>
-        <script src="../js/vendor/jquery-3.2.1.min.js"></script>
+        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
-        <script src="../js/plugins.js"></script>
-        <script src="../js/main.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+        <script src="https://use.fontawesome.com/acb2538b5f.js"></script>
+
     </body>
 </html>

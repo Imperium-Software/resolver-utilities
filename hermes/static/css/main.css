@@ -349,7 +349,7 @@ nav ul a {
 #footer-links {
     margin: auto;
     height: 20px;
-    max-width: 300px;
+    max-width: 330px;
     text-align: center;
 }
 
@@ -357,8 +357,10 @@ nav ul a {
     display: inline;
     float: left;
     font-size: 14px;
-    width: 100px;
+    width: 81px;
+    height: 40px;
 }
+
 
 
 /* Learn SAT Styles */
