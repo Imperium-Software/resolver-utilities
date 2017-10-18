@@ -370,7 +370,25 @@ nav ul a {
     height: 40px;
 }
 
+.card ul>li {
+    list-style-type: disc;
+}
 
+.card ul {
+    margin-left: 40px;
+}
+
+.methodologies-card h1 {
+    font-size: 45px;
+}
+
+.methodologies-card h2 {
+    font-size: 35px;
+}
+
+.methodologies-card h3 {
+    font-size: 25px;
+}
 
 /* Learn SAT Styles */
 
